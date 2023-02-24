@@ -3,11 +3,7 @@ import _debounce from 'lodash.debounce';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import fetchCountries from './js/fetchCountries.js';
 import { countryСardTeemplate, countryListTemplate } from './js/markupTemplate';
-import {showCountriesCoose} from './js/map.js';
  
-
- 
-
 const DEBOUNCE_DELAY = 300;
 
 const refs = {
@@ -21,13 +17,10 @@ refs.inputEl.addEventListener(
   'input',
   _debounce(onSearchCountryInput, DEBOUNCE_DELAY)
 );
-
-startMap();
-
+ 
 const clearMarkup = element => (element.innerHTML = '');
 const changeBorderColor = color => (refs.inputEl.style.backgroundColor = color);
-// console.log("iNIT MAP ВІЗОВ=====" );
-//  initMap(37.7749, -122.4194);
+
 function onSearchCountryInput(event) {
   clearMarkup(refs.countryListEl);
   clearMarkup(refs.countryInfoEl);
@@ -51,14 +44,18 @@ function onSearchCountryInput(event) {
         return;
       }
       renderMarkup(countries);
-      showCountriesCoose(...countries);
-    }).catch(() => {
+     
+
+    }).catch((error) => {
+      console.log('error Сработал catch', error);
       Notify.failure('❌Oops, there is no country with that name');
       changeBorderColor('lightcoral');
       
     });
     
-}
+}promise1.catch((error) => {
+  console.error(error);
+});
 
 function renderMarkup(countries) {
   changeBorderColor('khaki');
@@ -90,21 +87,4 @@ function renderMarkup(countries) {
   
   
 }
-
-function startMap() {
-
-     
-  let countries = [];
-
-  let mapOptions = {
-      zoom: 3,
-      minZoom: 1,
-      center: new google.maps.LatLng(50.7244893,3.2668189),
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      backgroundColor: 'none'
-  };
-
-  let map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  
-
-};
+ 
